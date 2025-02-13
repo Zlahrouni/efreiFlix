@@ -12,7 +12,7 @@ const App = () => {
 
       <main style={{ padding: '2rem' }}>
         <h2>Bienvenue sur Efreiflix</h2>
-        <p>Contenu principal de l'application...</p>
+        <p> Contenu principal de l'application...</p>
         
         <Suspense fallback={<div>Chargement du skeleton...</div>}>
           <Skeleton />
