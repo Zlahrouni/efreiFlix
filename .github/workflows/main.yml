@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [efreiflix-shell, efreiflix-header, efreiflix-mfe-skeleton]
+        app: [shell, header, mfe-skeleton]
 
     steps:
       - name: Checkout code
