@@ -1,69 +1,49 @@
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
-const path = require('path');
-const { dependencies } = require('./package.json');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
+  mode: process.env.NODE_ENV || "development",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: 'http://localhost:3002/', // Different port from header MFE
+    publicPath: 'auto',
   },
   devServer: {
-    port: 3002, // Different port from header MFE
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-    },
+    port: 3002,
+    hot: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
+        loader: "babel-loader",
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-env']
-          }
-        }
+        options: {
+          presets: ["@babel/preset-react"],
+        },
       },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
-      }
-    ]
+    ],
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'skeleton',
-      filename: 'remoteEntry.js',
+      name: "skeleton",
+      filename: "remoteEntry.js",
       exposes: {
-        './Skeleton': './src/Skeleton',
+        "./Skeleton": "./src/Skeleton",
       },
       shared: {
-        react: {
+        react: { 
           singleton: true,
-          requiredVersion: dependencies.react,
-          eager: true
+          requiredVersion: false
         },
-        'react-dom': {
+        "react-dom": { 
           singleton: true,
-          requiredVersion: dependencies['react-dom'],
-          eager: true
-        },
+          requiredVersion: false
+        }
       },
     }),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: "./public/index.html",
     }),
   ],
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
 }; 

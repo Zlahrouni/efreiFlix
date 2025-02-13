@@ -11,72 +11,52 @@
  * - Support du développement indépendant
  */
 
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
-const path = require('path');
-const { dependencies } = require('./package.json');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
+  mode: process.env.NODE_ENV || "development",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: 'http://localhost:3001/', // URL publique de base pour les assets (IMPORTANT pour Module Federation)
+    publicPath: 'auto',
   },
   devServer: {
-    port: 3001, // Port du serveur de développement (IMPORTANT : doit être unique pour chaque MFE)
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
-    headers: { // Configuration des en-têtes CORS (Cross-Origin Resource Sharing)
-      'Access-Control-Allow-Origin': '*', // Autoriser toutes les origines (pour le développement)
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-    },
+    port: 3001,
+    hot: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
+        loader: "babel-loader",
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-env']
-          }
-        }
+        options: {
+          presets: ["@babel/preset-react"],
+        },
       },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
-      }
-    ]
+    ],
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'header', // Nom UNIQUE du Micro Frontend (utilisé par le Shell pour l'importer)
-      filename: 'remoteEntry.js', // Nom du fichier d'entrée exposé (conventionnel)
+      name: "header",
+      filename: "remoteEntry.js",
       exposes: {
-        './Header': './src/Header', // Expose le composant Header (chemin relatif)
+        "./Header": "./src/Header",
       },
-      shared: { // Configuration des dépendances partagées
+      shared: {
         react: { 
-          singleton: true, 
-          requiredVersion: dependencies.react,
-          eager: true // Ajout de eager pour le chargement
+          singleton: true,
+          requiredVersion: false
         },
-        'react-dom': { 
-          singleton: true, 
-          requiredVersion: dependencies['react-dom'],
-          eager: true // Ajout de eager pour le chargement
-        },
+        "react-dom": { 
+          singleton: true,
+          requiredVersion: false
+        }
       },
     }),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: "./public/index.html",
     }),
   ],
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
 };
