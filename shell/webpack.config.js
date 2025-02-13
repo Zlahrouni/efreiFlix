@@ -19,8 +19,8 @@ const getRemoteEntryUrl = (appName) => {
   if (process.env.NODE_ENV === 'production') {
     // Replace these URLs with your actual Vercel deployment URLs
     const urls = {
-      header: 'https://efreiflix-header.vercel.app',
-      skeleton: 'https://efreiflix-skeleton.vercel.app'
+      header: 'https://efrei-header-five.vercel.app',
+      skeleton: 'https://efrei-skeleton-five.vercel.app'
     };
     return `${urls[appName]}/remoteEntry.js`;
   }
