@@ -1,5 +1,5 @@
 {
-  "name": "efreiflix-shell",
+  "name": "shell",
   "version": "1.0.0",
   "scripts": {
     "start": "webpack serve --mode development",
