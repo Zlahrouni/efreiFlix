@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
-import Breadcrumb from 'breadcrumb/Breadcrumb';
-import Catalogue from 'catalogue/Catalogue';
 
 const Header = React.lazy(() => import('header/Header'));
 const Skeleton = React.lazy(() => import('skeleton/Skeleton'));
+const Breadcrumb = React.lazy(() => import('breadcrumb/Breadcrumb'));
+const Catalogue = React.lazy(() => import('catalogue/Catalogue'));
 
 const App = () => {
   return (
