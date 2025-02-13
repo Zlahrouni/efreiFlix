@@ -1,0 +1,18 @@
+{
+    "sourceFile": ".gitignore",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1739455659498,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1739455659498,
+            "name": "Commit-0",
+            "content": "# Dependencies\r\nnode_modules/\r\npackage-lock.json\r\nyarn.lock\r\n\r\n# Build outputs\r\ndist/\r\nbuild/\r\ncoverage/\r\n\r\n# Environment files\r\n.env\r\n.env.local\r\n.env.development.local\r\n.env.test.local\r\n.env.production.local\r\n\r\n# IDE and Editor files\r\n.idea/\r\n.vscode/\r\n*.swp\r\n*.swo\r\n.DS_Store\r\n\r\n# Debug logs\r\nnpm-debug.log*\r\nyarn-debug.log*\r\nyarn-error.log*\r\n\r\n# Temporary files\r\n*.log\r\n*.tmp\r\n.cache/\r\n"
+        }
+    ]
+}

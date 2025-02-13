@@ -1,0 +1,18 @@
+{
+    "sourceFile": ".github/workflows/main.yml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1739455894672,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1739455894672,
+            "name": "Commit-0",
+            "content": "name: EfreiFlix MFE CI/CD\r\n\r\non:\r\n  push:\r\n    branches: [ main, master ]\r\n  pull_request:\r\n    branches: [ main, master ]\r\n\r\njobs:\r\n  build-and-test:\r\n    runs-on: ubuntu-latest\r\n\r\n    strategy:\r\n      matrix:\r\n        app: [efreiflix-shell, efreiflix-header, efreiflix-mfe-skeleton]\r\n\r\n    steps:\r\n      - uses: actions/checkout@v3\r\n\r\n      - name: Setup Node.js\r\n        uses: actions/setup-node@v3\r\n        with:\r\n          node-version: '18.x'\r\n          cache: 'npm'\r\n\r\n      - name: Install Root Dependencies\r\n        run: npm ci\r\n\r\n      - name: Install App Dependencies\r\n        run: |\r\n          cd ${{ matrix.app }}\r\n          npm ci\r\n\r\n      - name: Build\r\n        run: |\r\n          cd ${{ matrix.app }}\r\n          npm run build\r\n\r\n      - name: Test\r\n        run: |\r\n          cd ${{ matrix.app }}\r\n          npm test\r\n        continue-on-error: true\r\n\r\n      - name: Upload Build Artifact\r\n        uses: actions/upload-artifact@v3\r\n        with:\r\n          name: ${{ matrix.app }}-build\r\n          path: ${{ matrix.app }}/dist "
+        }
+    ]
+}
