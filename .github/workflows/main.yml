@@ -15,16 +15,25 @@ jobs:
         app: [efreiflix-shell, efreiflix-header, efreiflix-mfe-skeleton]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
           cache: 'npm'
 
       - name: Install Root Dependencies
         run: npm ci
+        
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install App Dependencies
         run: |
@@ -39,11 +48,32 @@ jobs:
       - name: Test
         run: |
           cd ${{ matrix.app }}
-          npm test
+          if [ -f "package.json" ] && grep -q "\"test\":" "package.json"; then
+            npm test
+          else
+            echo "No test script found, skipping tests"
+          fi
+        shell: bash
         continue-on-error: true
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-build
-          path: ${{ matrix.app }}/dist 
+          path: ${{ matrix.app }}/dist
+          retention-days: 5
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: dist 
