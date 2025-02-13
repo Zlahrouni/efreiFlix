@@ -28,6 +28,11 @@ const App = () => {
         <Suspense fallback={<div className="loading">Chargement du skeleton...</div>}>
           <Skeleton />
         </Suspense>
+        <Suspense fallback={<div className="loading">Chargement du footer...</div>}>
+          <footer className="app-footer">
+            <p>&copy; 2025 EfreiFlix. Tous droits réservés.</p>
+          </footer>
+        </Suspense>
       </main>
     </div>
   );
