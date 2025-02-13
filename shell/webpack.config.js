@@ -16,14 +16,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 
 const getRemoteEntryUrl = (appName) => {
-  // if (process.env.NODE_ENV === 'production') {
-  //   // Replace these URLs with your actual Vercel deployment URLs
-  //   const urls = {
-  //     header: 'https://efreiflix-header.vercel.app',
-  //     skeleton: 'https://efreiflix-skeleton.vercel.app'
-  //   };
-  //   return `${urls[appName]}/remoteEntry.js`;
-  // }
+  if (process.env.NODE_ENV === 'production') {
+    // Replace these URLs with your actual Vercel deployment URLs
+    const urls = {
+      header: 'https://efreiflix-header.vercel.app',
+      skeleton: 'https://efreiflix-skeleton.vercel.app'
+    };
+    return `${urls[appName]}/remoteEntry.js`;
+  }
   const ports = {
     header: 3001,
     skeleton: 3002
