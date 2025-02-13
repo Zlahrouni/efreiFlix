@@ -1,4 +1,4 @@
-name: EfreiFlix MFE CI/CD
+name: EfreiFlix MFE Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,67 +23,18 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Install Root Dependencies
-        run: |
-          if [ -f "package-lock.json" ]; then
-            npm ci
-          else
-            npm install
-          fi
-        
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install App Dependencies
+      - name: Install Dependencies
         run: |
           cd ${{ matrix.app }}
-          if [ -f "package-lock.json" ]; then
-            npm ci
-          else
-            npm install
-          fi
+          npm install
         shell: bash
 
-      - name: Build
+      - name: Run Tests
         run: |
           cd ${{ matrix.app }}
-          npm run build
-        shell: bash
-
-      - name: Test
-        run: |
-          cd ${{ matrix.app }}
-          if [ -f "package.json" ] && grep -q "\"test\":" "package.json"; then
+          if grep -q "\"test\":" "package.json"; then
             npm test
           else
             echo "No test script found, skipping tests"
           fi
-        shell: bash
-        continue-on-error: true
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.app }}-build
-          path: ${{ matrix.app }}/dist
-          retention-days: 5
-
-  deploy:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dist
-
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: dist 
+        shell: bash 
