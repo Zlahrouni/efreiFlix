@@ -20,7 +20,7 @@ const getRemoteEntryUrl = (appName) => {
     // Replace these URLs with your actual Vercel deployment URLs
     const urls = {
       header: 'https://efrei-header-five.vercel.app',
-      skeleton: 'https://efrei-skeleton-five.vercel.app'
+      skeleton: 'https://efrei-skeleton.vercel.app'
     };
     return `${urls[appName]}/remoteEntry.js`;
   }
