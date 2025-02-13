@@ -61,7 +61,9 @@ module.exports = {
       name: "shell",
       remotes: {
         header: `header@${getRemoteEntryUrl('header')}`,
-        skeleton: `skeleton@${getRemoteEntryUrl('skeleton')}`
+        skeleton: `skeleton@${getRemoteEntryUrl('skeleton')}`,
+        catalogue: `catalogue@${getRemoteEntryUrl('catalogue')}`,
+        breadcrumb: `breadcrumb@${getRemoteEntryUrl('breadcrumb')}`
       },
       shared: {
         react: { 
