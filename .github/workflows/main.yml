@@ -1,0 +1,49 @@
+name: EfreiFlix MFE CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app: [efreiflix-shell, efreiflix-header, efreiflix-mfe-skeleton]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install Root Dependencies
+        run: npm ci
+
+      - name: Install App Dependencies
+        run: |
+          cd ${{ matrix.app }}
+          npm ci
+
+      - name: Build
+        run: |
+          cd ${{ matrix.app }}
+          npm run build
+
+      - name: Test
+        run: |
+          cd ${{ matrix.app }}
+          npm test
+        continue-on-error: true
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.app }}-build
+          path: ${{ matrix.app }}/dist 
