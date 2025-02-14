@@ -1,0 +1,31 @@
+/* SearchBar.css */
+
+.search-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #141414;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar-title {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.search-bar-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+}
+
+.search-bar-input::placeholder {
+  color: #888;
+} 

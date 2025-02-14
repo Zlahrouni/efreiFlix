@@ -4,12 +4,17 @@ import './App.css';
 const Header = React.lazy(() => import('header/Header'));
 const Breadcrumb = React.lazy(() => import('breadcrumb/Breadcrumb'));
 const Catalogue = React.lazy(() => import('catalogue/Catalogue'));
+const SearchBar = React.lazy(() => import('search-bar/src/SearchBar'));
 
 const App = () => {
   return (
     <div className="app-container">
       <Suspense fallback={<div className="loading">Chargement du header...</div>}>
         <Header />
+      </Suspense>
+
+      <Suspense fallback={<div className="loading">Chargement de la barre de recherche...</div>}>
+        <SearchBar />
       </Suspense>
 
       <Suspense fallback={<div className="loading">Chargement du breadcrumb...</div>}>

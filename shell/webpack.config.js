@@ -22,13 +22,19 @@ const getRemoteEntryUrl = (appName) => {
       header: 'https://efrei-header-five.vercel.app',
       skeleton: 'https://efrei-skeleton.vercel.app',
       catalogue: 'https://efrei-catalogue.vercel.app',
-      breadcrumb: 'https://efrei-breadcrumb.vercel.app'
+      breadcrumb: 'https://efrei-breadcrumb.vercel.app',
+      ficheProduit: 'https://efrei-fiche-produit.vercel.app',
+      searchBar: 'https://efrei-search-bar.vercel.app'
     };
     return `${urls[appName]}/remoteEntry.js`;
   }
   const ports = {
     header: 3001,
-    skeleton: 3002
+    skeleton: 3002,
+    searchBar: 3003,
+    breadcrumb: 3004,
+    catalogue: 3005,
+    ficheProduit: 3006
   };
   return `http://localhost:${ports[appName]}/remoteEntry.js`;
 };
@@ -68,7 +74,8 @@ module.exports = {
         skeleton: `skeleton@${getRemoteEntryUrl('skeleton')}`,
         catalogue: `catalogue@${getRemoteEntryUrl('catalogue')}`,
         breadcrumb: `breadcrumb@${getRemoteEntryUrl('breadcrumb')}`,
-        ficheProduit: `ficheProduit@${getRemoteEntryUrl('ficheProduit')}`
+        ficheProduit: `ficheProduit@${getRemoteEntryUrl('ficheProduit')}`,
+        searchBar: `searchBar@${getRemoteEntryUrl('searchBar')}`
       },
       shared: {
         react: { 
