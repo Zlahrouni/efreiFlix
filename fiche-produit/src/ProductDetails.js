@@ -1,6 +1,7 @@
 import React from 'react';
 
 const ProductDetails = ({ movie, onBack }) => {
+  console.log('Movie data:', movie);
   return (
     <div>
       <h1>Fiche Produit</h1>
