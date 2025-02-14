@@ -67,7 +67,8 @@ module.exports = {
         header: `header@${getRemoteEntryUrl('header')}`,
         skeleton: `skeleton@${getRemoteEntryUrl('skeleton')}`,
         catalogue: `catalogue@${getRemoteEntryUrl('catalogue')}`,
-        breadcrumb: `breadcrumb@${getRemoteEntryUrl('breadcrumb')}`
+        breadcrumb: `breadcrumb@${getRemoteEntryUrl('breadcrumb')}`,
+        ficheProduit: `ficheProduit@${getRemoteEntryUrl('ficheProduit')}`
       },
       shared: {
         react: { 
