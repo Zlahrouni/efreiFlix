@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moviesData from '../../db/efreiflix-db.json';
+import './Catalogue.css';
 
 // Import the ProductDetails component from the fiche-produit MFE
 const ProductDetails = React.lazy(() => import('ficheProduit/ProductDetails'));
@@ -39,22 +40,36 @@ const Catalogue = () => {
   };
 
   return (
-    <div className="bg-black text-white p-4">
+    <div className="catalogue-container">
       {selectedMovie ? (
         <React.Suspense fallback={<div>Loading...</div>}>
           <ProductDetails movie={selectedMovie} onBack={() => setSelectedMovie(null)} />
         </React.Suspense>
       ) : (
         <>
-          <h1 className="text-4xl font-extrabold mb-6">Catalogue</h1>
-          <div className="flex overflow-x-scroll space-x-4">
+          <h1 className="catalogue-title">Films populaires</h1>
+          <div className="movies-row">
             {moviesData.movies.map((movie) => (
-              <div key={movie.id} className="flex-none w-64 p-2 border rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-300" onClick={() => handleMovieClick(movie)}>
-                <img src={moviePosters[movie.id] || movie.posterUrl} alt={movie.title} className="w-full h-64 object-cover mb-2" />
-                <h2 className="text-xl font-bold">{movie.title}</h2>
-                <p className="text-gray-400">{movie.year}</p>
-                <p className="text-gray-500">{movie.description}</p>
-                <a href={movie.trailerUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Watch Trailer</a>
+              <div key={movie.id} className="movie-card" onClick={() => handleMovieClick(movie)}>
+                <img 
+                  src={moviePosters[movie.id] || movie.posterUrl} 
+                  alt={movie.title} 
+                  className="movie-poster"
+                />
+                <div className="movie-info">
+                  <h2 className="movie-title">{movie.title}</h2>
+                  <p className="movie-year">{movie.year}</p>
+                  <p className="movie-description">{movie.description}</p>
+                  <a 
+                    href={movie.trailerUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="trailer-link"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Watch Trailer
+                  </a>
+                </div>
               </div>
             ))}
           </div>
