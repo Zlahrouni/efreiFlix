@@ -9,41 +9,68 @@ const ProductDetails = React.lazy(() => import('ficheProduit/ProductDetails'));
 const Catalogue = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [moviePosters, setMoviePosters] = useState({});
-  const rowRef = useRef(null);
+  const [seriesPosters, setSeriesPosters] = useState({});
+  const movieRowRef = useRef(null);
+  const seriesRowRef = useRef(null);
+  const genreRowRefs = useRef({});
+
+  // Get unique genres from both movies and series
+  const allGenres = [...new Set([
+    ...moviesData.movies.flatMap(movie => movie.genres),
+    ...moviesData.series.flatMap(series => series.genres)
+  ])].sort();
 
   useEffect(() => {
     const fetchPosters = async () => {
       const apiKey = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
-      const promises = moviesData.movies.map(async (movie) => {
+      
+      // Fetch movie posters
+      const moviePromises = moviesData.movies.map(async (movie) => {
         const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movie.title}`);
         const posterPath = response.data.results[0]?.poster_path;
         return { id: movie.id, posterUrl: `http://image.tmdb.org/t/p/w500/${posterPath}` };
       });
 
-      const posters = await Promise.all(promises);
-      const postersMap = posters.reduce((acc, { id, posterUrl }) => {
+      // Fetch series posters
+      const seriesPromises = moviesData.series.map(async (series) => {
+        const response = await axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&query=${series.title}`);
+        const posterPath = response.data.results[0]?.poster_path;
+        return { id: series.id, posterUrl: `http://image.tmdb.org/t/p/w500/${posterPath}` };
+      });
+
+      const moviePosters = await Promise.all(moviePromises);
+      const seriesPosters = await Promise.all(seriesPromises);
+
+      const moviePostersMap = moviePosters.reduce((acc, { id, posterUrl }) => {
         acc[id] = posterUrl;
         return acc;
       }, {});
 
-      setMoviePosters(postersMap);
+      const seriesPostersMap = seriesPosters.reduce((acc, { id, posterUrl }) => {
+        acc[id] = posterUrl;
+        return acc;
+      }, {});
+
+      setMoviePosters(moviePostersMap);
+      setSeriesPosters(seriesPostersMap);
     };
 
     fetchPosters();
   }, []);
 
-  const handleMovieClick = (movie) => {
-    const movieWithPoster = {
-      ...movie,
-      posterUrl: moviePosters[movie.id] || movie.posterUrl,
+  const handleItemClick = (item, isSeries = false) => {
+    const itemWithPoster = {
+      ...item,
+      posterUrl: isSeries ? seriesPosters[item.id] : moviePosters[item.id],
+      isSeries
     };
-    setSelectedMovie(movieWithPoster);
+    setSelectedMovie(itemWithPoster);
   };
 
-  const scroll = (direction) => {
-    if (rowRef.current) {
+  const scroll = (ref, direction) => {
+    if (ref.current) {
       const scrollAmount = direction === 'left' ? -800 : 800;
-      rowRef.current.scrollBy({
+      ref.current.scrollBy({
         left: scrollAmount,
         behavior: 'smooth'
       });
@@ -62,6 +89,45 @@ const Catalogue = () => {
     </svg>
   );
 
+  const ContentRow = ({ title, items, rowRef, posters, isSeries = false }) => (
+    <>
+      <h1 className="catalogue-title">{title}</h1>
+      <div className="movies-section">
+        <button className="scroll-button left" onClick={() => scroll(rowRef, 'left')} aria-label="Scroll left">
+          <ChevronLeft />
+        </button>
+        <div className="movies-row" ref={rowRef}>
+          {items.map((item) => (
+            <div key={item.id} className="movie-card" onClick={() => handleItemClick(item, isSeries)}>
+              <img 
+                src={posters[item.id] || item.posterUrl} 
+                alt={item.title} 
+                className="movie-poster"
+              />
+              <div className="movie-info">
+                <h2 className="movie-title">{item.title}</h2>
+                <p className="movie-year">{item.year}</p>
+                <p className="movie-description">{item.description}</p>
+                <a 
+                  href={item.trailerUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="trailer-link"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Watch Trailer
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button className="scroll-button right" onClick={() => scroll(rowRef, 'right')} aria-label="Scroll right">
+          <ChevronRight />
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <div className="catalogue-container">
       {selectedMovie ? (
@@ -70,40 +136,46 @@ const Catalogue = () => {
         </React.Suspense>
       ) : (
         <>
-          <h1 className="catalogue-title">Films populaires</h1>
-          <div className="movies-section">
-            <button className="scroll-button left" onClick={() => scroll('left')} aria-label="Scroll left">
-              <ChevronLeft />
-            </button>
-            <div className="movies-row" ref={rowRef}>
-              {moviesData.movies.map((movie) => (
-                <div key={movie.id} className="movie-card" onClick={() => handleMovieClick(movie)}>
-                  <img 
-                    src={moviePosters[movie.id] || movie.posterUrl} 
-                    alt={movie.title} 
-                    className="movie-poster"
-                  />
-                  <div className="movie-info">
-                    <h2 className="movie-title">{movie.title}</h2>
-                    <p className="movie-year">{movie.year}</p>
-                    <p className="movie-description">{movie.description}</p>
-                    <a 
-                      href={movie.trailerUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="trailer-link"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Watch Trailer
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="scroll-button right" onClick={() => scroll('right')} aria-label="Scroll right">
-              <ChevronRight />
-            </button>
-          </div>
+          {/* Movies Row */}
+          <ContentRow 
+            title="Films populaires" 
+            items={moviesData.movies} 
+            rowRef={movieRowRef} 
+            posters={moviePosters}
+          />
+
+          {/* Series Row */}
+          <ContentRow 
+            title="Séries populaires" 
+            items={moviesData.series} 
+            rowRef={seriesRowRef} 
+            posters={seriesPosters}
+            isSeries={true}
+          />
+
+          {/* Genre-based Rows */}
+          {allGenres.map((genre) => {
+            const genreContent = [
+              ...moviesData.movies.filter(movie => movie.genres.includes(genre)),
+              ...moviesData.series.filter(series => series.genres.includes(genre))
+            ];
+            
+            if (genreContent.length === 0) return null;
+
+            if (!genreRowRefs.current[genre]) {
+              genreRowRefs.current[genre] = React.createRef();
+            }
+
+            return (
+              <ContentRow 
+                key={genre}
+                title={`${genre}`}
+                items={genreContent}
+                rowRef={genreRowRefs.current[genre]}
+                posters={{...moviePosters, ...seriesPosters}}
+              />
+            );
+          })}
         </>
       )}
     </div>
