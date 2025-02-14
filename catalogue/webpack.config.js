@@ -3,7 +3,20 @@ const { ModuleFederationPlugin } = require("webpack").container;
 
 const isProd = process.env.NODE_ENV === 'production';
 const prodUrl = 'https://efrei-catalogue.vercel.app/';
-
+const getRemoteEntryUrl = (appName) => {
+  if (process.env.NODE_ENV === 'production') {
+    // Replace these URLs with your actual Vercel deployment URLs
+    const urls = {
+        ficheProduit: 'https://efrei-fiche-produit.vercel.app'
+    };
+    return `${urls[appName]}/remoteEntry.js`;
+  }
+  const ports = {
+    header: 3001,
+    skeleton: 3002
+  };
+  return `http://localhost:${ports[appName]}/remoteEntry.js`;
+};
 module.exports = {
   entry: "./src/index.js",
   mode: process.env.NODE_ENV || "development",
@@ -43,6 +56,9 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         "./Catalogue": "./src/Catalogue",
+      },
+      remotes: {
+        ficheProduit: `ficheProduit@${getRemoteEntryUrl('ficheProduit')}`,
       },
       shared: {
         react: { 
