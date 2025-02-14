@@ -35,22 +35,22 @@ const Catalogue = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="bg-black text-white p-4">
       {selectedMovie ? (
         <React.Suspense fallback={<div>Loading...</div>}>
           <ProductDetails movie={selectedMovie} onBack={() => setSelectedMovie(null)} />
         </React.Suspense>
       ) : (
         <>
-          <h1 className="text-3xl font-bold mb-4">Catalogue</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <h1 className="text-4xl font-extrabold mb-6">Catalogue</h1>
+          <div className="flex overflow-x-scroll space-x-4">
             {moviesData.movies.map((movie) => (
-              <div key={movie.id} className="p-4 border rounded-lg bg-gray-100" onClick={() => handleMovieClick(movie)}>
-                <img src={moviePosters[movie.id] || movie.posterUrl} alt={movie.title} className="w-full h-48 object-cover mb-2" />
-                <h2 className="text-xl font-semibold">{movie.title}</h2>
-                <p className="text-gray-700">{movie.year}</p>
+              <div key={movie.id} className="flex-none w-64 p-2 border rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-300" onClick={() => handleMovieClick(movie)}>
+                <img src={moviePosters[movie.id] || movie.posterUrl} alt={movie.title} className="w-full h-64 object-cover mb-2" />
+                <h2 className="text-xl font-bold">{movie.title}</h2>
+                <p className="text-gray-400">{movie.year}</p>
                 <p className="text-gray-500">{movie.description}</p>
-                <a href={movie.trailerUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Watch Trailer</a>
+                <a href={movie.trailerUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Watch Trailer</a>
               </div>
             ))}
           </div>
