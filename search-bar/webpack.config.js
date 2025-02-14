@@ -2,7 +2,7 @@ const path = require('path');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
 const isProd = process.env.NODE_ENV === 'production';
-const prodUrl = 'https://efrei-search-bar.vercel.app/'; 
+const prodUrl = 'https://efrei-searchbar.vercel.app/'; 
 
 module.exports = {
   entry: './src/index.js',

@@ -1,5 +1,5 @@
 {
-  "name": "search-bar",
+  "name": "searchbar",
   "version": "1.0.0",
   "description": "Micro-frontend for search bar",
   "main": "src/index.js",

@@ -24,7 +24,7 @@ const getRemoteEntryUrl = (appName) => {
       catalogue: 'https://efrei-catalogue.vercel.app',
       breadcrumb: 'https://efrei-breadcrumb.vercel.app',
       ficheProduit: 'https://efrei-fiche-produit.vercel.app',
-      searchBar: 'https://efrei-search-bar.vercel.app'
+      searchBar: 'https://efrei-searchbar.vercel.app'
     };
     return `${urls[appName]}/remoteEntry.js`;
   }
@@ -48,14 +48,12 @@ module.exports = {
   devServer: {
     port: 3000,
     hot: true,
-    historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
       {
         test: /\.jsx?$/,
         loader: "babel-loader",
@@ -64,6 +62,10 @@ module.exports = {
           presets: ["@babel/preset-react"],
         },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
     ],
   },
   plugins: [
