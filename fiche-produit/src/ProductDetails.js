@@ -1,4 +1,5 @@
 import React from 'react';
+import './ProductDetails.css'; // Ensure this line is present
 
 const ProductDetails = ({ movie, onBack }) => {
   console.log('Movie data:', movie);
@@ -16,4 +17,4 @@ const ProductDetails = ({ movie, onBack }) => {
   );
 };
 
-export default ProductDetails; 
+export default ProductDetails;

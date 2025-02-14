@@ -31,7 +31,11 @@ const Catalogue = () => {
   }, []);
 
   const handleMovieClick = (movie) => {
-    setSelectedMovie(movie);
+    const movieWithPoster = {
+      ...movie,
+      posterUrl: moviePosters[movie.id] || movie.posterUrl,
+    };
+    setSelectedMovie(movieWithPoster);
   };
 
   return (
