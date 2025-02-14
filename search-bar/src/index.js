@@ -1,14 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import SearchBar from './SearchBar';
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-
-root.render(
-  <React.StrictMode>
-    <SearchBar />
-  </React.StrictMode>
-);
-
-export { SearchBar as default }; 
+ReactDOM.render(<SearchBar />, document.getElementById('root')); 
