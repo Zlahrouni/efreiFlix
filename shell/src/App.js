@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import './App.css';
 
 const Header = React.lazy(() => import('header/Header'));
-const Skeleton = React.lazy(() => import('skeleton/Skeleton'));
 const Breadcrumb = React.lazy(() => import('breadcrumb/Breadcrumb'));
 const Catalogue = React.lazy(() => import('catalogue/Catalogue'));
 
@@ -24,10 +23,7 @@ const App = () => {
         <Suspense fallback={<div className="loading">Chargement du catalogue...</div>}>
           <Catalogue />
         </Suspense>
-
-        <Suspense fallback={<div className="loading">Chargement du skeleton...</div>}>
-          <Skeleton />
-        </Suspense>
+    
         <Suspense fallback={<div className="loading">Chargement du footer...</div>}>
           <footer className="app-footer">
             <p>&copy; 2025 EfreiFlix. Tous droits réservés.</p>
