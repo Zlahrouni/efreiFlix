@@ -12,15 +12,55 @@
   color: #e5e5e5;
 }
 
-.movies-row {
-  display: flex;
-  overflow-x: auto;
-  padding: 20px 0;
-  scroll-behavior: smooth;
+.movies-section {
+  position: relative;
 }
 
-.movies-row::-webkit-scrollbar {
-  display: none;
+.movies-row {
+  display: flex;
+  overflow-x: hidden;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  margin: 0 -20px;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.movies-section:hover .scroll-button {
+  opacity: 1;
+}
+
+.scroll-button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}
+
+.scroll-button svg {
+  width: 25px;
+  height: 25px;
+  fill: white;
 }
 
 .movie-card {

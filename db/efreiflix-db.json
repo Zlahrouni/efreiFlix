@@ -37,15 +37,6 @@
       "rating": 4.2
     },
     {
-      "id": 5,
-      "title": "Pulp Fiction",
-      "year": 1994,
-      "genres": ["Crime", "Drama"],
-      "description": "Les vies de deux gangsters, d'un boxeur et d'un couple de braqueurs se croisent dans une série d'histoires de violence et de rédemption.",
-      "trailerUrl": "https://www.youtube.com/embed/s7EdQ4FqbhY",
-      "rating": 4.7
-    },
-    {
       "id": 6,
       "title": "Oppenheimer",
       "year": 2023,
