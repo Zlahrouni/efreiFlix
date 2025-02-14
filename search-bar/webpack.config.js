@@ -1,12 +1,15 @@
 const path = require('path');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
+const isProd = process.env.NODE_ENV === 'production';
+const prodUrl = 'https://efrei-search-bar.vercel.app/'; 
+
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/dist/'
+    publicPath: isProd ? prodUrl : 'auto'
   },
   module: {
     rules: [
@@ -23,9 +26,16 @@ module.exports = {
     ]
   },
   devServer: {
-    static: path.join(__dirname, 'public'),
+    contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000
+    port: 3006,
+    hot: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    },
+    historyApiFallback: true,
   },
   resolve: {
     extensions: ['.js', '.jsx']
