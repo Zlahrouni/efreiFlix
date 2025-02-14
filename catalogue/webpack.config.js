@@ -1,15 +1,24 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 
+const isProd = process.env.NODE_ENV === 'production';
+const prodUrl = 'https://efrei-catalogue.vercel.app/';
+
 module.exports = {
   entry: "./src/index.js",
   mode: process.env.NODE_ENV || "development",
   output: {
-    publicPath: 'auto',
+    publicPath: isProd ? prodUrl : 'auto',
+    filename: '[name].[contenthash].js'
   },
   devServer: {
     port: 3003,
     hot: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    },
     historyApiFallback: true,
   },
   module: {
