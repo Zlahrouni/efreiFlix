@@ -4,7 +4,7 @@ import './App.css';
 const Header = React.lazy(() => import('header/Header'));
 const Breadcrumb = React.lazy(() => import('breadcrumb/Breadcrumb'));
 const Catalogue = React.lazy(() => import('catalogue/Catalogue'));
-const SearchBar = React.lazy(() => import('searchbar/SearchBar'));
+const SearchBar = React.lazy(() => import('searchBar/SearchBar'));
 
 const App = () => {
   return (
