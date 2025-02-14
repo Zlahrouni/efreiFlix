@@ -9,14 +9,15 @@ const SearchBar = React.lazy(() => import('search-bar/SearchBar'));
 const App = () => {
   return (
     <div className="app-container">
-      <Suspense fallback={<div className="loading">Chargement du header...</div>}>
-        <Header />
-      </Suspense>
+      <div className="app-header">
+        <Suspense fallback={<div className="loading">Chargement du header...</div>}>
+          <Header />
+        </Suspense>
 
-      <Suspense fallback={<div className="loading">Chargement de la barre de recherche...</div>}>
-        {/* Composant SearchBar - Barre de recherche pour filtrer les films */}
-        <SearchBar />
-      </Suspense>
+        <Suspense fallback={<div className="loading">Chargement de la barre de recherche...</div>}>
+          <SearchBar />
+        </Suspense>
+      </div>
 
       <Suspense fallback={<div className="loading">Chargement du breadcrumb...</div>}>
         <Breadcrumb />

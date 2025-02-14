@@ -10,6 +10,7 @@ const Catalogue = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [moviePosters, setMoviePosters] = useState({});
   const [seriesPosters, setSeriesPosters] = useState({});
+  const topRatedRef = useRef(null);
   const movieRowRef = useRef(null);
   const seriesRowRef = useRef(null);
   const genreRowRefs = useRef({});
@@ -19,6 +20,14 @@ const Catalogue = () => {
     ...moviesData.movies.flatMap(movie => movie.genres),
     ...moviesData.series.flatMap(series => series.genres)
   ])].sort();
+
+  // Get top 10 rated content (movies + series combined)
+  const topRatedContent = [
+    ...moviesData.movies.map(movie => ({ ...movie, isSeries: false })),
+    ...moviesData.series.map(series => ({ ...series, isSeries: true }))
+  ]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 10);
 
   useEffect(() => {
     const fetchPosters = async () => {
@@ -89,7 +98,7 @@ const Catalogue = () => {
     </svg>
   );
 
-  const ContentRow = ({ title, items, rowRef, posters, isSeries = false }) => (
+  const ContentRow = ({ title, items, rowRef, posters, isSeries = false, showRank = false }) => (
     <>
       <h1 className="catalogue-title">{title}</h1>
       <div className="movies-section">
@@ -97,16 +106,22 @@ const Catalogue = () => {
           <ChevronLeft />
         </button>
         <div className="movies-row" ref={rowRef}>
-          {items.map((item) => (
-            <div key={item.id} className="movie-card" onClick={() => handleItemClick(item, isSeries)}>
+          {items.map((item, index) => (
+            <div key={item.id} className="movie-card" onClick={() => handleItemClick(item, item.isSeries || isSeries)}>
+              {showRank && (
+                <div className="rank-badge">
+                  #{index + 1}
+                </div>
+              )}
               <img 
-                src={posters[item.id] || item.posterUrl} 
+                src={(item.isSeries ? seriesPosters[item.id] : moviePosters[item.id]) || item.posterUrl} 
                 alt={item.title} 
                 className="movie-poster"
               />
               <div className="movie-info">
                 <h2 className="movie-title">{item.title}</h2>
                 <p className="movie-year">{item.year}</p>
+                <p className="movie-rating">Note: {item.rating}/5</p>
                 <p className="movie-description">{item.description}</p>
                 <a 
                   href={item.trailerUrl} 
@@ -136,6 +151,15 @@ const Catalogue = () => {
         </React.Suspense>
       ) : (
         <>
+          {/* Top 10 Row */}
+          <ContentRow 
+            title="Top 10 Films et Séries" 
+            items={topRatedContent}
+            rowRef={topRatedRef}
+            posters={{...moviePosters, ...seriesPosters}}
+            showRank={true}
+          />
+
           {/* Movies Row */}
           <ContentRow 
             title="Films populaires" 

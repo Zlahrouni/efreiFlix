@@ -1,16 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import SearchBar from './SearchBar';
 
-const SearchBarComponent = () => {
-  return (
-    <div>
-      <h1>Recherche</h1>
-      <input type="text" placeholder="Tapez votre recherche ici..." />
-    </div>
-  );
-};
+const container = document.getElementById('root');
+const root = createRoot(container);
 
-ReactDOM.render(<SearchBarComponent />, document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <SearchBar />
+  </React.StrictMode>
+);
 
-export default SearchBar; 
+export { SearchBar as default }; 
