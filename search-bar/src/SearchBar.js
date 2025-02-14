@@ -6,7 +6,13 @@ const SearchBar = () => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleSearchChange = useCallback((e) => {
-    setSearchTerm(e.target.value);
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+    
+    // Tell everyone what the user typed
+    window.dispatchEvent(new CustomEvent('user-search', {
+      detail: { searchTerm: newSearchTerm }
+    }));
   }, []);
 
   const handleClear = useCallback(() => {

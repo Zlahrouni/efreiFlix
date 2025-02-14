@@ -10,10 +10,30 @@ const Catalogue = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [moviePosters, setMoviePosters] = useState({});
   const [seriesPosters, setSeriesPosters] = useState({});
+  const [searchFilter, setSearchFilter] = useState('');
   const topRatedRef = useRef(null);
   const movieRowRef = useRef(null);
   const seriesRowRef = useRef(null);
   const genreRowRefs = useRef({});
+
+  // Listen for search events
+  useEffect(() => {
+    const handleSearch = (event) => {
+      setSearchFilter(event.detail.searchTerm.toLowerCase());
+    };
+
+    window.addEventListener('user-search', handleSearch);
+    return () => window.removeEventListener('user-search', handleSearch);
+  }, []);
+
+  // Filter content based on search
+  const filterContent = (items) => {
+    if (!searchFilter) return items;
+    return items.filter(item => 
+      item.title.toLowerCase().includes(searchFilter) ||
+      item.description.toLowerCase().includes(searchFilter)
+    );
+  };
 
   // Get unique genres from both movies and series
   const allGenres = [...new Set([
@@ -22,10 +42,10 @@ const Catalogue = () => {
   ])].sort();
 
   // Get top 10 rated content (movies + series combined)
-  const topRatedContent = [
+  const topRatedContent = filterContent([
     ...moviesData.movies.map(movie => ({ ...movie, isSeries: false })),
     ...moviesData.series.map(series => ({ ...series, isSeries: true }))
-  ]
+  ])
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 10);
 
@@ -163,7 +183,7 @@ const Catalogue = () => {
           {/* Movies Row */}
           <ContentRow 
             title="Films populaires" 
-            items={moviesData.movies} 
+            items={filterContent(moviesData.movies)} 
             rowRef={movieRowRef} 
             posters={moviePosters}
           />
@@ -171,7 +191,7 @@ const Catalogue = () => {
           {/* Series Row */}
           <ContentRow 
             title="Séries populaires" 
-            items={moviesData.series} 
+            items={filterContent(moviesData.series)} 
             rowRef={seriesRowRef} 
             posters={seriesPosters}
             isSeries={true}
@@ -179,10 +199,10 @@ const Catalogue = () => {
 
           {/* Genre-based Rows */}
           {allGenres.map((genre) => {
-            const genreContent = [
+            const genreContent = filterContent([
               ...moviesData.movies.filter(movie => movie.genres.includes(genre)),
               ...moviesData.series.filter(series => series.genres.includes(genre))
-            ];
+            ]);
             
             if (genreContent.length === 0) return null;
 
