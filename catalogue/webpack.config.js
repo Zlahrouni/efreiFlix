@@ -1,5 +1,7 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { ModuleFederationPlugin } = require("webpack").container;
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const path = require('path');
+const { dependencies } = require('./package.json');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const prodUrl = 'https://efrei-catalogue.vercel.app/';
@@ -27,52 +29,58 @@ module.exports = {
   devServer: {
     port: 3003,
     hot: true,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
     },
-    historyApiFallback: true,
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        loader: "babel-loader",
         exclude: /node_modules/,
-        options: {
-          presets: ["@babel/preset-react"],
-        },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env']
+          }
+        }
       },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader'],
-      },
-    ],
+      }
+    ]
   },
   plugins: [
     new ModuleFederationPlugin({
       name: "catalogue",
       filename: "remoteEntry.js",
       exposes: {
-        "./Catalogue": "./src/Catalogue",
-      },
-      remotes: {
-        ficheProduit: `ficheProduit@${getRemoteEntryUrl('ficheProduit')}`,
+        './Catalog': './src/Catalog',
       },
       shared: {
-        react: { 
+        react: {
           singleton: true,
-          requiredVersion: false
+          requiredVersion: dependencies.react,
+          eager: true
         },
-        "react-dom": { 
+        'react-dom': {
           singleton: true,
-          requiredVersion: false
-        }
+          requiredVersion: dependencies['react-dom'],
+          eager: true
+        },
       },
     }),
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: './public/index.html',
     }),
   ],
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
 }; 

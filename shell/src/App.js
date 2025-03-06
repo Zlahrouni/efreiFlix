@@ -3,7 +3,7 @@ import './App.css';
 
 const Header = React.lazy(() => import('header/Header'));
 const Breadcrumb = React.lazy(() => import('breadcrumb/Breadcrumb'));
-const Catalogue = React.lazy(() => import('catalogue/Catalogue'));
+const Catalog = React.lazy(() => import('catalogue/Catalog'));
 const SearchBar = React.lazy(() => import('searchbar/SearchBar'));
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
         <p className="main-description">Contenu principal de l'application...</p>
 
         <Suspense fallback={<div className="loading">Chargement du catalogue...</div>}>
-          <Catalogue />
+          <Catalog />
         </Suspense>
     
         <Suspense fallback={<div className="loading">Chargement du footer...</div>}>
