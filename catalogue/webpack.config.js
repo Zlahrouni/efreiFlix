@@ -15,7 +15,8 @@ const getRemoteEntryUrl = (appName) => {
   }
   const ports = {
     header: 3001,
-    skeleton: 3002
+    skeleton: 3002,
+    ficheProduit: 3005
   };
   return `http://localhost:${ports[appName]}/remoteEntry.js`;
 };
@@ -61,6 +62,9 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         './Catalogue': './src/Catalogue',
+      },
+      remotes: {
+        ficheProduit: `ficheProduit@${getRemoteEntryUrl('ficheProduit')}`,
       },
       shared: {
         react: { singleton: true, eager: true, requiredVersion: false },
