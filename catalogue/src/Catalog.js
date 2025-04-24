@@ -11,7 +11,6 @@ const Catalog = () => {
     const getData = async () => {
       try {
         const result = await fetchData();
-        console.log(result);
         setData(result);
       } catch (e) {
         console.error('Failed to fetch data:', e);

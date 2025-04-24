@@ -28,16 +28,15 @@ module.exports = {
   },
   devServer: {
     port: 3003,
-    hot: true,
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, 'dist'),
     },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
     },
-  },
+  },  
   module: {
     rules: [
       {
@@ -61,21 +60,13 @@ module.exports = {
       name: "catalogue",
       filename: "remoteEntry.js",
       exposes: {
-        './Catalog': './src/Catalog',
+        './Catalogue': './src/Catalogue',
       },
       shared: {
-        react: {
-          singleton: true,
-          requiredVersion: dependencies.react,
-          eager: true
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: dependencies['react-dom'],
-          eager: true
-        },
+        react: { singleton: true, eager: true, requiredVersion: false },
+        'react-dom': { singleton: true, eager: true, requiredVersion: false },
       },
-    }),
+    }),    
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),

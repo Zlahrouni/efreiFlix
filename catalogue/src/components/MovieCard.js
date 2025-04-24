@@ -17,7 +17,7 @@ const MovieCard = ({ movie }) => {
             </div>
             <ul className="flex gap-1">
               {movie.genres.map((genre) => {
-                return <Tag>{genre}</Tag>;
+                return <Tag key={genre}>{genre}</Tag>;
               })}
             </ul>
           </div>

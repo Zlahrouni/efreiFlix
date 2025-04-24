@@ -30,10 +30,11 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
     port: 3006,
     hot: true,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",

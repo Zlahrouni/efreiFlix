@@ -4,7 +4,7 @@ import Catalog from './Catalog';
 
 const mount = (el) => {
   const root = createRoot(el);
-  root.render(<Catalog />);
+  root.render(<Catalogue />);
   return root;
 };
 
