@@ -28,18 +28,18 @@ const App = () => {
         </Suspense>
       </div>
 
-      <Suspense fallback={<div className="loading">Chargement du breadcrumb...</div>}>
-        <Breadcrumb />
-      </Suspense>
-
       <main className="main-content">
+				<Suspense fallback={<div className="loading">Chargement du breadcrumb...</div>}>
+        	<Breadcrumb />
+				</Suspense>
+
         <h2 className="welcome-title">Bienvenue sur Efreiflix</h2>
         <p className="main-description">Contenu principal de l'application...</p>
 
         <Suspense fallback={<div className="loading">Chargement du catalogue...</div>}>
           <Catalogue />
         </Suspense>
-    
+
         <Suspense fallback={<div className="loading">Chargement du footer...</div>}>
           <footer className="app-footer">
             <p>&copy; 2025 EfreiFlix. Tous droits réservés.</p>

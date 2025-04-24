@@ -25,10 +25,11 @@ onBeforeMount(() => {
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb__list">
         <li class="breadcrumb__item">
-          <a href="/">Home</a>
+          <a href="/">Netflix</a>
         </li>
         <li class="breadcrumb__item" v-for="(path, index) in breadcrumb" :key="index">
-          <a href="/">{{ path }}</a>
+          <a v-if="path === ''" href="/">Home</a>
+          <a v-else :href="path">{{ path }}</a>
         </li>
       </ol>
     </nav>
@@ -37,9 +38,8 @@ onBeforeMount(() => {
 
 <style>
 .breadcrumb {
-  padding: 2rem;
   display: flex;
-  justify-content: center;
+  margin: 20px 4%;
 }
 
 .breadcrumb__list {
@@ -55,5 +55,14 @@ onBeforeMount(() => {
   a {
     text-decoration: underline;
   }
+}
+
+.breadcrumb__item:first-child{
+  margin-left: 0;
+}
+
+.breadcrumb__item:not(:last-child)::after {
+  content: "»";
+  margin-left: 1rem;
 }
 </style>
