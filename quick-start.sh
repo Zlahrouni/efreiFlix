@@ -27,7 +27,6 @@ components=(
     "fiche-produit"
     "header"
     "mfe-skeleton"
-    "search-bar"
 )
 
 # Tableau pour stocker les PIDs

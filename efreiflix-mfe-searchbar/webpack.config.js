@@ -44,7 +44,7 @@ module.exports = {
       name: 'searchbar',
       filename: 'remoteEntry.js',
       exposes: {
-        './Searchbar': './src/Searchbar',
+        './SearchBar': './src/SearchBar',
       },
       shared: {
         react: {

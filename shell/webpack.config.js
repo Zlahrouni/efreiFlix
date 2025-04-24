@@ -34,7 +34,7 @@ const getRemoteEntryUrl = (appName) => {
     catalogue: 3003,
     breadcrumb: 3004,
     ficheProduit: 3008,
-    searchbar: 3009
+    searchbar: 3005,
   };
   return `http://localhost:${ports[appName]}/remoteEntry.js`;
 };
