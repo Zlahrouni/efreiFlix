@@ -1,10 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import Searchbar from './Searchbar';
+import SearchBar from './SearchBar';
 
 const mount = (el) => {
   const root = createRoot(el);
-  root.render(<Searchbar />);
+  root.render(<SearchBar />);
   return root;
 };
 

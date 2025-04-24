@@ -23,7 +23,7 @@ components=(
     "db"
     "efreiflix-mfe-about"
     "efreiflix-mfe-admin"
-    "efreiflix-mfe-searchbar"
+    "efreiflix-mfe-SearchBar"
     "fiche-produit"
     "header"
     "mfe-skeleton"

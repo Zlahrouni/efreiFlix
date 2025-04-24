@@ -1,5 +1,5 @@
 {
-  "name": "efreiflix-mfe-searchbar",
+  "name": "efreiflix-mfe-SearchBar",
   "version": "1.0.0",
   "scripts": {
     "start": "webpack serve --mode development",

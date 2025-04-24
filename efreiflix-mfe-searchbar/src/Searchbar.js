@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import './styles.css';
 
-const Searchbar = () => {
+const SearchBar = () => {
   const { 
     register, 
     handleSubmit, 
@@ -65,4 +65,4 @@ const Searchbar = () => {
   );
 };
 
-export default Searchbar;
+export default SearchBar;

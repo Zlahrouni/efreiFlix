@@ -41,7 +41,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'searchbar',
+      name: 'SearchBar',
       filename: 'remoteEntry.js',
       exposes: {
         './SearchBar': './src/SearchBar',
