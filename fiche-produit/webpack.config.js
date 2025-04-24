@@ -35,37 +35,29 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
     port: 3005,
     hot: true,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+      "Access-Control-Allow-Origin": "*"
     },
     historyApiFallback: true,
-  },
+    static: {
+      directory: path.resolve(__dirname, "dist"),
+    },
+  },  
   plugins: [
     new ModuleFederationPlugin({
-      name: "ficheProduit",
-      filename: "remoteEntry.js",
+      name: 'ficheProduit',
+      filename: 'remoteEntry.js',
       exposes: {
-        "./ProductDetails": "./src/ProductDetails",
+        './ProductDetails': './src/ProductDetails.js',
       },
       shared: {
-        react: { 
-          singleton: true,
-          requiredVersion: false,
-          eager: true
-        },
-        "react-dom": { 
-          singleton: true,
-          requiredVersion: false,
-          eager: true
-        }
+        react: { singleton: true, eager: true, requiredVersion: false },
+        'react-dom': { singleton: true, eager: true, requiredVersion: false },
       },
     }),
+    
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
