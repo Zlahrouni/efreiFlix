@@ -134,7 +134,7 @@ const Catalogue = () => {
                 </div>
               )}
               <img 
-                src={(item.isSeries ? seriesPosters[item.id] : moviePosters[item.id]) || item.posterUrl} 
+                src={(item.isSeries || isSeries ? seriesPosters[item.id] : moviePosters[item.id]) || item.posterUrl} 
                 alt={item.title} 
                 className="movie-poster"
               />
