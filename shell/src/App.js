@@ -10,28 +10,44 @@ const App = () => {
   return (
     <div className="app-container">
       <div className="app-header">
-        <Suspense fallback={<div className="loading">Chargement du header...</div>}>
+        <Suspense
+          fallback={<div className="loading">Chargement du header...</div>}
+        >
           <Header />
         </Suspense>
 
-        <Suspense fallback={<div className="loading">Chargement de la barre de recherche...</div>}>
+        <Suspense
+          fallback={
+            <div className="loading">
+              Chargement de la barre de recherche...
+            </div>
+          }
+        >
           <SearchBar />
         </Suspense>
       </div>
 
-      <Suspense fallback={<div className="loading">Chargement du breadcrumb...</div>}>
+      <Suspense
+        fallback={<div className="loading">Chargement du breadcrumb...</div>}
+      >
         <Breadcrumb />
       </Suspense>
 
       <main className="main-content">
         <h2 className="welcome-title">Bienvenue sur Efreiflix</h2>
-        <p className="main-description">Contenu principal de l'application...</p>
+        <p className="main-description">
+          Contenu principal de l'application...
+        </p>
 
-        <Suspense fallback={<div className="loading">Chargement du catalogue...</div>}>
+        <Suspense
+          fallback={<div className="loading">Chargement du catalogue...</div>}
+        >
           <Catalogue />
         </Suspense>
-    
-        <Suspense fallback={<div className="loading">Chargement du footer...</div>}>
+
+        <Suspense
+          fallback={<div className="loading">Chargement du footer...</div>}
+        >
           <footer className="app-footer">
             <p>&copy; 2025 EfreiFlix. Tous droits réservés.</p>
           </footer>

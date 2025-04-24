@@ -4,7 +4,7 @@ import Catalog from './Catalog';
 
 const mount = (el) => {
   const root = createRoot(el);
-  root.render(<Catalogue />);
+  root.render(<Catalog />);
   return root;
 };
 
@@ -18,4 +18,4 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // We are running through the shell
-export { mount }; 
+export { mount };
