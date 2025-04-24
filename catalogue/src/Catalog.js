@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import './styles.css';
 import { fetchData } from '../service/catalog';
 import MovieCard from './components/MovieCard';
 import './styles/index.css';
 import axios from 'axios';
+
+const ProductDetails = React.lazy(() => import('ficheProduit/ProductDetails'));
 
 const Catalog = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -74,28 +76,37 @@ const Catalog = () => {
 
   return (
     <div className="flex flex-col gap-8 m-[20px_4%]">
-      {Object.entries(moviesByGenre).map(([genre, movies], index) => (
-        <div
-          key={genre}
-          style={{
-            zIndex: Object.entries(moviesByGenre).length - index,
-          }}
-        >
-          <h2 className="text-xl font-bold mb-4">{genre}</h2>
-          <div className="hide-scrollbar pl-2 -ml-2 pt-2 -mt-2 pb-28 -mb-28 overflow-x-auto whitespace-nowrap">
-            <div className="flex gap-4">
-              {movies.map((movie) => (
-                <MovieCard
-                  onClick={() => handleItemClick(movie)}
-                  key={movie.id}
-                  movie={movie}
-                  img={moviePosters[movie.id]}
-                />
-              ))}
+      {selectedMovie ? (
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProductDetails
+            movie={selectedMovie}
+            onBack={() => setSelectedMovie(null)}
+          />
+        </Suspense>
+      ) : (
+        Object.entries(moviesByGenre).map(([genre, movies], index) => (
+          <div
+            key={genre}
+            style={{
+              zIndex: Object.entries(moviesByGenre).length - index,
+            }}
+          >
+            <h2 className="text-xl font-bold mb-4">{genre}</h2>
+            <div className="hide-scrollbar pl-2 -ml-2 pt-2 -mt-2 pb-28 -mb-28 overflow-x-auto whitespace-nowrap">
+              <div className="flex gap-4">
+                {movies.map((movie) => (
+                  <MovieCard
+                    onClick={() => handleItemClick(movie)}
+                    key={movie.id}
+                    movie={movie}
+                    img={moviePosters[movie.id]}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 };
